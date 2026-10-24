@@ -1,0 +1,23 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function pertenece(grupoId) {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/grupos/$(grupoId)) &&
+        request.auth.uid in firestore.get(/databases/(default)/documents/grupos/$(grupoId)).data.integrantesUID;
+    }
+    match /materiales/{creadorUID}/{itemId}/{nombreArchivo} {
+      allow read: if request.auth != null && (
+        request.auth.uid == creadorUID ||
+        (resource.metadata.grupoId != 'privado' && pertenece(resource.metadata.grupoId))
+      );
+      allow create: if request.auth != null && request.auth.uid == creadorUID
+        && request.resource.size <= 10 * 1024 * 1024
+        && request.resource.contentType.matches('application/pdf|application/msword|application/vnd.openxmlformats-officedocument.wordprocessingml.document|application/vnd.ms-powerpoint|application/vnd.openxmlformats-officedocument.presentationml.presentation|image/png|image/jpeg|image/webp|video/mp4')
+        && request.resource.metadata.grupoId is string
+        && (request.resource.metadata.grupoId == 'privado' || pertenece(request.resource.metadata.grupoId));
+      allow delete: if request.auth != null && request.auth.uid == creadorUID;
+      allow update: if false;
+    }
+  }
+}

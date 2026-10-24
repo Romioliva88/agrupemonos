@@ -1,0 +1,106 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function autenticado() {
+      return request.auth != null;
+    }
+    function integrante() {
+      return autenticado() && request.auth.uid in resource.data.integrantesUID;
+    }
+    function propietario() {
+      return autenticado() && resource.data.propietarioUID == request.auth.uid;
+    }
+    function conservaPropietario() {
+      return request.resource.data.propietarioUID == resource.data.propietarioUID
+        && request.resource.data.propietario == resource.data.propietario
+        && request.resource.data.integrantesUID is list
+        && request.resource.data.propietarioUID in request.resource.data.integrantesUID;
+    }
+    function ingresoValido(grupoId) {
+      let codigo = request.resource.data.get('ultimoCodigoIngreso', '');
+      return autenticado()
+        && codigo is string
+        && codigo.size() >= 20
+        && exists(/databases/$(database)/documents/invitaciones/$(codigo))
+        && get(/databases/$(database)/documents/invitaciones/$(codigo)).data.grupoId == grupoId
+        && !(request.auth.uid in resource.data.integrantesUID)
+        && request.auth.uid in request.resource.data.integrantesUID
+        && request.resource.data.integrantesUID.hasAll(resource.data.integrantesUID)
+        && request.resource.data.integrantesUID.size() == resource.data.integrantesUID.size() + 1
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['integrantesUID', 'ultimoCodigoIngreso']);
+    }
+    match /grupos/{grupoId} {
+      // Permite comprobar si un ID antiguo aún no existe durante la migración.
+      allow get: if autenticado() && (resource == null || integrante());
+      allow list: if integrante();
+      allow create: if autenticado()
+        && request.resource.data.propietarioUID == request.auth.uid
+        && request.resource.data.integrantesUID == [request.auth.uid];
+      allow update: if conservaPropietario() && (
+        (propietario()) ||
+        (integrante() && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['tareas', 'mensajes']))
+      );
+      allow delete: if propietario();
+    }
+    match /solicitudesIngreso/{solicitudId} {
+      allow get: if autenticado() && (resource.data.solicitanteUID == request.auth.uid || resource.data.propietarioUID == request.auth.uid);
+      allow list: if autenticado() && resource.data.propietarioUID == request.auth.uid;
+      allow create: if autenticado()
+        && solicitudId == request.resource.data.grupoId + '_' + request.auth.uid
+        && request.resource.data.solicitanteUID == request.auth.uid
+        && request.resource.data.estado == 'pendiente'
+        && request.resource.data.nombre is string
+        && request.resource.data.keys().hasOnly(['grupoId', 'solicitanteUID', 'propietarioUID', 'codigoInvitacion', 'nombre', 'estado', 'creada'])
+        && exists(/databases/$(database)/documents/invitaciones/$(request.resource.data.codigoInvitacion))
+        && get(/databases/$(database)/documents/invitaciones/$(request.resource.data.codigoInvitacion)).data.grupoId == request.resource.data.grupoId
+        && get(/databases/$(database)/documents/invitaciones/$(request.resource.data.codigoInvitacion)).data.propietarioUID == request.resource.data.propietarioUID;
+      allow update: if autenticado()
+        && resource.data.propietarioUID == request.auth.uid
+        && resource.data.estado == 'pendiente'
+        && request.resource.data.estado in ['aprobada', 'rechazada']
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['estado']);
+      allow delete: if false;
+    }
+    match /invitaciones/{codigo} {
+      allow get: if autenticado();
+      allow list: if false;
+      allow create: if autenticado()
+        && request.resource.data.propietarioUID == request.auth.uid
+        && exists(/databases/$(database)/documents/grupos/$(request.resource.data.grupoId))
+        && get(/databases/$(database)/documents/grupos/$(request.resource.data.grupoId)).data.propietarioUID == request.auth.uid;
+      allow update, delete: if false;
+    }
+    // Clases, Ideas y Eventos: lectura por creador o miembros del grupo.
+    function puedeVerModulo(datos) {
+      return autenticado() && (
+        datos.creadorUID == request.auth.uid ||
+        (datos.grupoId is string && datos.grupoId != '' &&
+         exists(/databases/$(database)/documents/grupos/$(datos.grupoId)) &&
+         request.auth.uid in get(/databases/$(database)/documents/grupos/$(datos.grupoId)).data.integrantesUID)
+      );
+    }
+    function moduloValido(datos) {
+      return datos.creadorUID == request.auth.uid
+        && datos.titulo is string && datos.titulo.size() > 0 && datos.titulo.size() <= 160
+        && datos.contenido is string && datos.contenido.size() <= 3000
+        && datos.grupoId is string
+        && (datos.grupoId == '' || (
+          exists(/databases/$(database)/documents/grupos/$(datos.grupoId)) &&
+          request.auth.uid in get(/databases/$(database)/documents/grupos/$(datos.grupoId)).data.integrantesUID
+        ));
+    }
+    match /{tipo}/{id} {
+      allow get, list: if tipo in ['clases', 'ideas', 'eventos'] && puedeVerModulo(resource.data);
+      allow create: if tipo in ['clases', 'ideas', 'eventos'] && autenticado() && moduloValido(request.resource.data);
+      allow update: if tipo in ['clases', 'ideas', 'eventos'] && autenticado() && (
+        (resource.data.creadorUID == request.auth.uid && moduloValido(request.resource.data)) ||
+        (tipo == 'ideas' && puedeVerModulo(resource.data)
+         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['votos', 'comentarios'])
+         && request.resource.data.votos is list && request.resource.data.comentarios is list)
+      );
+      allow delete: if tipo in ['clases', 'ideas', 'eventos'] && autenticado() && resource.data.creadorUID == request.auth.uid;
+    }
+  }
+}

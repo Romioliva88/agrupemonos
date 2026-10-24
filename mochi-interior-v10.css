@@ -1,0 +1,38 @@
+/* Mochi Cloud 104 — pantallas interiores. La portada y el inicio conservan el diseño V6. */
+:root{--mc-ink:#493d60;--mc-muted:#766e87;--mc-line:#eae5f1;--mc-purple:#7961ad;--mc-lilac:#eee7fb;--mc-pink:#fcebf1;--mc-blue:#e9f4fc;--mc-mint:#e7f4ee}
+#grupos,#perfil,#clases,#ideas,#eventos{min-height:100dvh;background:#faf9fd;color:var(--mc-ink);padding-bottom:calc(94px + env(safe-area-inset-bottom))}
+#grupos .barra,#perfil .barra,#clases .barra,#ideas .barra,#eventos .barra{position:sticky;top:0;z-index:20;min-height:65px;padding:calc(11px + env(safe-area-inset-top)) 17px 11px;background:rgba(250,249,253,.97);border-bottom:1px solid var(--mc-line);backdrop-filter:blur(12px)}
+#grupos .barra h2,#perfil .barra h2,#clases .barra h2,#ideas .barra h2,#eventos .barra h2{font-size:19px;letter-spacing:-.4px;color:var(--mc-ink)}
+#grupos .barra button,#perfil .barra button,#clases .barra button,#ideas .barra button,#eventos .barra button{font-size:12px;background:white;border:1px solid var(--mc-line);color:var(--mc-purple);border-radius:13px;padding:10px 12px}
+#grupos .contenido,#perfil .contenido,#clases .mod-contenido,#ideas .mod-contenido,#eventos .mod-contenido{padding:16px 16px 32px;max-width:100%;margin:0}
+#grupos .cabecera-grupos{position:relative;margin:0 0 18px;padding:20px 18px;border-radius:21px;background:linear-gradient(135deg,#ebe5fa 0%,#f8eaf2 67%,#edf6fc 100%);border:1px solid #e8dff2;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+#grupos .cabecera-grupos h1{font-size:22px;line-height:1.2;margin:7px 0;color:#493b62;letter-spacing:-.6px}
+#grupos .cabecera-grupos p{font-size:13px;color:#746783;margin:0;line-height:1.5}
+#grupos .mochi-eyebrow{font-size:10px;font-weight:900;letter-spacing:1.4px;color:#8066a7}
+#grupos .mochi-groups-deco{position:absolute;right:16px;top:12px;color:#bd9ce6;font-size:25px;opacity:.65}
+#grupos .cabecera-grupos .boton{width:auto;max-width:100%;padding:11px 16px;background:#7557ac;color:#fff;border-radius:13px;font-size:13px;margin:0;box-shadow:none}
+#grupos .tarjeta,#perfil .tarjeta,#clases .mod-tarjeta,#ideas .mod-tarjeta,#eventos .mod-tarjeta,#grupos .tarjeta-grupo,#grupos .publicacion,#clases .ag-card,#ideas .ag-card,#eventos .ag-card{background:#fff;border:1px solid var(--mc-line);border-radius:18px;box-shadow:0 5px 18px #59457b0b;padding:16px;max-width:100%;overflow-wrap:anywhere}
+#grupos .tarjeta-grupo{border-left:4px solid #cbb7f1;margin:0 0 12px}
+#grupos .tarjeta-grupo:nth-child(3n+2){border-left-color:#efb8cf}
+#grupos .tarjeta-grupo:nth-child(3n){border-left-color:#b5dbed}
+#grupos h2,#grupos h3,#perfil h2,#clases h2,#ideas h2,#eventos h2{color:var(--mc-ink)}
+#grupos .formulario-grupo{margin:12px 0 18px;padding:17px}
+#grupos input,#grupos select,#grupos textarea,#perfil input,#clases input,#clases select,#clases textarea,#ideas input,#ideas select,#ideas textarea,#eventos input,#eventos select,#eventos textarea{max-width:100%;background:#fff;border:1px solid #e5ddec;border-radius:12px;color:var(--mc-ink);padding:12px;min-height:43px;font-size:14px}
+#grupos input:focus,#grupos textarea:focus,#clases input:focus,#ideas input:focus,#eventos input:focus{outline:2px solid #d8c5f7;outline-offset:1px}
+#grupos button,#perfil button,#clases button,#ideas button,#eventos button{touch-action:manipulation}
+#grupos .principal,#perfil .principal,#clases .principal,#ideas .principal,#eventos .principal{background:#7961ad;color:white;border-radius:13px;min-height:44px}
+#grupos .secundario,#perfil .secundario,#clases .secundario,#ideas .secundario,#eventos .secundario{background:#f5efff;color:#6c519d;border:1px solid #e6d9f6;border-radius:13px;min-height:44px}
+#perfil .perfil{text-align:center;margin:12px 0;padding:25px 18px}
+#perfil .emoji-grande{font-size:42px;background:#f2ebff;border-radius:22px;display:inline-grid;place-items:center;width:76px;height:76px;margin:0 auto 12px}
+#perfil .perfil p{color:var(--mc-muted);font-size:14px;overflow-wrap:anywhere}
+#grupos .navegacion,#perfil .navegacion,#clases .navegacion,#ideas .navegacion,#eventos .navegacion{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(100%,480px);z-index:25;margin:0;padding:10px 9px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:1px solid var(--mc-line);box-shadow:0 -8px 24px #493d6010;display:flex;justify-content:space-around;gap:2px}
+#grupos .navegacion button,#perfil .navegacion button,#clases .navegacion button,#ideas .navegacion button,#eventos .navegacion button{min-width:0;flex:1;padding:5px 1px;border:0;background:transparent;color:#847694;font-size:23px;display:flex;flex-direction:column;align-items:center;gap:2px}
+#grupos .navegacion button.activo,#perfil .navegacion button.activo{color:#7456a6}
+#grupos .navegacion small,#perfil .navegacion small,#clases .navegacion small,#ideas .navegacion small,#eventos .navegacion small{font-size:10px;font-weight:800}
+#grupos .mochi-header-icon,#clases .mochi-header-icon,#ideas .mochi-header-icon,#eventos .mochi-header-icon{display:inline-grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#eee7fb;font-size:17px;margin-right:5px}
+#modalQR.ag-qr-fondo:not(.oculta){z-index:1000}
+#modalQR .ag-qr-tarjeta{width:min(92vw,360px);max-height:90dvh;overflow:auto;border-radius:22px}
+#grupos .fila-agregar,#clases .fila-agregar{display:flex;gap:8px;align-items:center}
+#grupos .fila-agregar input,#clases .fila-agregar input{flex:1;min-width:0}
+@media(max-width:370px){#grupos .cabecera-grupos{padding:17px 14px}#grupos .cabecera-grupos h1{font-size:20px}#grupos .barra h2,#perfil .barra h2{font-size:17px}}
+@media(min-width:481px){#grupos .navegacion,#perfil .navegacion,#clases .navegacion,#ideas .navegacion,#eventos .navegacion{border-radius:16px 16px 0 0}}

@@ -1,0 +1,18 @@
+
+/* Calendario de eventos: conectado a las mismas consultas de Firestore. */
+#eventos .ag-calendar{margin:16px 0 20px;padding:18px 14px;border:1px solid #fff;background:linear-gradient(145deg,#fffdfef2,#f0ecffef 60%,#e8f7ffef);border-radius:26px;box-shadow:0 12px 32px #8977d021;color:#302a70}
+#eventos .ag-calendar-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+#eventos .ag-calendar-head h3{margin:0;text-align:center;font-size:1.15rem;text-transform:capitalize;color:#463494}
+#eventos .ag-cal-arrow{border:0;border-radius:15px;width:43px;height:43px;background:#e6ddff;color:#6e50ca;font-size:1.7rem;cursor:pointer}
+#eventos .ag-calendar-hint{margin:10px 0 16px;color:#8175a9;font-size:.82rem;text-align:center}
+#eventos .ag-calendar-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;text-align:center}
+#eventos .ag-calendar-weekday{font-weight:800;font-size:.77rem;color:#9382c3;padding:7px 0}
+#eventos .ag-calendar-day{position:relative;min-height:43px;border:1px solid transparent;background:#ffffffa8;color:#443886;border-radius:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#eventos .ag-calendar-day.has-events{background:#e9ddff;border-color:#d5c0ff}
+#eventos .ag-calendar-day.is-today{border-color:#8c77ee}
+#eventos .ag-calendar-day.is-selected{background:linear-gradient(140deg,#9172f1,#a87bef);color:white;box-shadow:0 5px 12px #8872d64f}
+#eventos .ag-calendar-dot{position:absolute;bottom:4px;width:5px;height:5px;border-radius:50%;background:#ec78b6}
+#eventos .ag-calendar-day.is-selected .ag-calendar-dot{background:#fff}
+#eventos .ag-calendar-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;font-size:.82rem;font-weight:700;color:#6852b0}
+#eventos .ag-calendar-clear{background:#fff;border:1px solid #d6c8ff;color:#7053ca;border-radius:18px;padding:7px 12px;cursor:pointer}
+@media(max-width:380px){#eventos .ag-calendar{padding:12px 8px}#eventos .ag-calendar-grid{gap:3px}#eventos .ag-calendar-day{min-height:38px}}

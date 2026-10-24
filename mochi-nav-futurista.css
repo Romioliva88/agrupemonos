@@ -1,0 +1,17 @@
+/* Navegacion futurista Mochi Tech — aislada de la logica de la app */
+.navegacion{gap:clamp(2px,1vw,12px)!important;padding:11px 10px max(12px,env(safe-area-inset-bottom))!important;background:linear-gradient(120deg,#161b39 0%,#242047 54%,#172b50 100%)!important;border:1px solid rgba(176,178,255,.32)!important;border-bottom:0!important;border-radius:26px 26px 0 0!important;box-shadow:0 -9px 35px rgba(56,49,120,.22),inset 0 1px 0 rgba(255,255,255,.15)!important;backdrop-filter:blur(16px)}
+.navegacion button{min-width:0!important;flex:1!important;gap:2px!important;padding:7px 2px 5px!important;border-radius:17px!important;background:transparent!important;box-shadow:none!important;color:#c6c8ed!important;transition:background .2s,transform .2s!important}
+.navegacion button .nav-icon{box-sizing:content-box!important;width:23px!important;height:23px!important;padding:9px!important;margin:0 auto 4px!important;border-radius:15px!important;background:rgba(255,255,255,.065)!important;stroke-width:2.15!important;transition:transform .2s,box-shadow .2s!important}
+.navegacion button:nth-child(1) .nav-icon{color:#b4a2ff!important}
+.navegacion button:nth-child(2) .nav-icon{color:#66dfff!important}
+.navegacion button:nth-child(3) .nav-icon{color:#fff!important;background:linear-gradient(135deg,#9068fa,#42d9f5)!important;box-shadow:0 3px 17px rgba(96,153,255,.38)!important;transform:translateY(-3px)!important}
+.navegacion button:nth-child(4) .nav-icon{color:#ff9bdb!important}
+.navegacion button:nth-child(5) .nav-icon{color:#a9f2cf!important}
+.navegacion button small,.navegacion button:nth-child(3) small{font-size:10px!important;letter-spacing:.1px!important;font-weight:700!important;color:#d2d4f5!important}
+.navegacion button.activo{background:rgba(147,133,249,.15)!important}
+.navegacion button.activo .nav-icon{box-shadow:0 0 0 1px rgba(183,175,255,.45),0 0 17px rgba(123,116,255,.26)!important;transform:translateY(-2px)!important}
+.navegacion button:nth-child(3).activo .nav-icon{transform:translateY(-3px)!important}
+.navegacion button.activo small{color:#fff!important}
+.navegacion button:is(:hover,:focus-visible){background:rgba(255,255,255,.11)!important;outline-offset:2px!important}
+@media(max-width:370px){.navegacion{padding-left:5px!important;padding-right:5px!important}.navegacion button .nav-icon{width:21px!important;height:21px!important;padding:7px!important}.navegacion button small{font-size:9px!important}}
+@media(prefers-reduced-motion:reduce){.navegacion button,.navegacion button .nav-icon{transition:none!important}}
